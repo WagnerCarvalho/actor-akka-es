@@ -1,6 +1,6 @@
 package com.poc.social.api.controller
 
-import com.poc.social.api.entities.request.FeedCreateRequest
+import com.poc.social.api.entities.Feed
 import com.poc.social.api.entities.response.FeedCreateResponse
 import com.poc.social.api.entities.response.FeedResponse
 import com.poc.social.api.routers.FeedRouter
@@ -19,18 +19,18 @@ class CreateFeedController {
 
     @PostMapping(FeedRouter.CREATE_FEED)
     fun createFeed(
-        @Valid @RequestBody request: FeedCreateRequest
+        @Valid @RequestBody request: Feed
     ): Future<FeedCreateResponse> {
 
-        return feedService.create(request).toFutureResponse()
+        return feedService.createFeed(request).toFutureResponse()
     }
 
     @GetMapping(FeedRouter.GET_FEED)
     fun get(
-        @PathVariable id: String
+        @PathVariable id: Long
     ): Future<FeedResponse> {
 
-        return feedService.get(id).toFutureResponse()
+        return feedService.getFeed(id).toFutureResponse()
     }
 }
 

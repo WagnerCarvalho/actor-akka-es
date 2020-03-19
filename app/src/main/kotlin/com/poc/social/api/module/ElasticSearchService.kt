@@ -1,6 +1,6 @@
 package com.poc.social.api.module
 
-import com.poc.social.api.entities.request.FeedCreateRequest
+import com.poc.social.api.entities.Feed
 import com.poc.social.api.entities.response.FeedCreateResponse
 import com.poc.social.api.entities.response.FeedResponse
 import com.poc.social.api.utils.getError
@@ -17,25 +17,36 @@ class ElasticSearchService {
     @Autowired
     private lateinit var elasticSearch: ElasticSearch
 
-    fun create(request: FeedCreateRequest): Single<FeedCreateResponse> {
-        logger.info("Start create with request: $request")
+    fun createFeed(request: Feed): Single<FeedCreateResponse> {
+        logger.info("Start createFeed with request: $request")
 
-        return elasticSearch.createCard(UUID.randomUUID().toString(), request)
+        return elasticSearch.createFeed(UUID.randomUUID().toString(), request)
             .doOnSuccess {
-                logger.info("End create with response: $it")
+                logger.info("End createFeed with response: $it")
             }.doOnError {
-                logger.error("Error create with error: ${it.getError()}")
+                logger.error("Error createFeed with error: ${it.getError()}")
             }
     }
 
-    fun get(id: String): Single<FeedResponse> {
-        logger.info("Start get with id: $id")
+    fun getFeed(id: Long): Single<FeedResponse> {
+        logger.info("Start getFeed with id: $id")
 
-        return elasticSearch.get(id)
+        return elasticSearch.getFeed(id)
             .doOnSuccess {
-                logger.info("End get with response: $it")
+                logger.info("End getFeed with response: $it")
             }.doOnError {
-                logger.error("Error get with error: ${it.getError()}")
+                logger.error("Error getFeed with error: ${it.getError()}")
+            }
+    }
+
+    fun getContact(id: Long): Single<ContactResponse> {
+        logger.info("Start getFeed with id: $id")
+
+        return elasticSearch.getContact(id)
+            .doOnSuccess {
+                logger.info("End getFeed with response: $it")
+            }.doOnError {
+                logger.error("Error getFeed with error: ${it.getError()}")
             }
     }
 }

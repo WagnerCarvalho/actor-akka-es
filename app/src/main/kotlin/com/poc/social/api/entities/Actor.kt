@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Actor(
 
-    @JsonProperty("id")
-    val id: Long = 0,
-
     @JsonProperty("name")
-    val name: Name = Name()
+    val nameUser: NameUser = NameUser()
 
 )

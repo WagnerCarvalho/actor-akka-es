@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Users(
+data class NameUser(
 
-    @JsonProperty("users")
-    val users: MutableList<User?>? = mutableListOf()
+    @JsonProperty("first")
+    val first: String = "",
+
+    @JsonProperty("last")
+    val last: String = ""
 
 )
