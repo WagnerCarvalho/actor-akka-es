@@ -1,4 +1,4 @@
-package com.poc.social.api.configuration
+package com.poc.social.api.configuration.elastic
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.poc.social.api.module.ElasticSearch
