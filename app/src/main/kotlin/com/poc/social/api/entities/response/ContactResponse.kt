@@ -1,19 +1,18 @@
-package com.poc.social.api.module
+package com.poc.social.api.entities.response
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ContactResponse(
 
     @JsonProperty("_source")
-    val data: Source = Source()
+    val data: SourceContact = SourceContact()
 
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Source(
+data class SourceContact(
 
     @JsonProperty("actor")
     val actor: ActorContact = ActorContact()

@@ -67,12 +67,16 @@ class UserRouters(
     }
 
     private fun createUser(request: Feed): CompletionStage<ActionPerformed?>? {
-        return AskPattern.ask<Command, ActionPerformed?>(
-            userRegistryActor,
-            Function { ref: ActorRef<ActionPerformed?>? -> CreateUser(request, ref) },
-            askTimeout,
-            scheduler
-        )
+        return request.friends.map {
+            AskPattern.ask<Command, ActionPerformed?>(
+                userRegistryActor,
+                Function { ref: ActorRef<ActionPerformed?>? -> CreateUser(request.actionSocial(it), ref) },
+                askTimeout,
+                scheduler
+            )
+        }.get(0)
+
+
     }
 
     fun userRoutes(): Route {

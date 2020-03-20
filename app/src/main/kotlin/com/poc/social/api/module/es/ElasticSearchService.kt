@@ -1,14 +1,15 @@
-package com.poc.social.api.module
+package com.poc.social.api.module.es
 
 import com.poc.social.api.entities.Feed
+import com.poc.social.api.entities.response.ContactResponse
 import com.poc.social.api.entities.response.FeedCreateResponse
 import com.poc.social.api.entities.response.FeedResponse
 import com.poc.social.api.utils.getError
 import io.reactivex.Single
+import java.util.UUID
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class ElasticSearchService {

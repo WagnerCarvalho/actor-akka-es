@@ -1,14 +1,14 @@
 package com.poc.social.api.service
 
 import com.poc.social.api.entities.Feed
+import com.poc.social.api.entities.response.ContactResponse
 import com.poc.social.api.entities.response.FeedContact
 import com.poc.social.api.entities.response.FeedCreateResponse
 import com.poc.social.api.entities.response.FeedResponse
-import com.poc.social.api.module.ContactResponse
-import com.poc.social.api.module.ElasticSearchService
+import com.poc.social.api.module.es.ElasticSearchService
+import com.poc.social.api.module.streaming.StreamingFeedService
 import com.poc.social.api.utils.getError
 import io.reactivex.Single
-import io.reactivex.Single.just
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -20,6 +20,9 @@ class FeedService {
     @Autowired
     private lateinit var elasticSearchService: ElasticSearchService
 
+    @Autowired
+    private lateinit var streamingFeedService: StreamingFeedService
+
     fun createSocialFeed(request: Feed): Single<FeedContact> {
         logger.info("Start createSocialFeed with request: $request")
 
@@ -27,7 +30,7 @@ class FeedService {
             .flatMap {
                 getContact(request.id!!)
             }.flatMap {
-                just(FeedContact().merge(it, request))
+                streamingFeedService.sendFeedSocial(FeedContact().merge(it, request))
             }.doOnSuccess {
                 logger.info("End createSocialFeed with response: $it")
             }.doOnError {

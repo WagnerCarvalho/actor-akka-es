@@ -1,8 +1,7 @@
-package com.poc.social.api.configuration.elastic
+package com.poc.social.api.configuration.streaming
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.poc.social.api.module.es.ElasticSearch
-import java.util.concurrent.TimeUnit
+import com.poc.social.api.module.streaming.StreamingFeed
 import okhttp3.OkHttpClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -11,18 +10,20 @@ import org.springframework.context.annotation.Configuration
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
+import retrofit2.http.Streaming
+import java.util.concurrent.TimeUnit
 
 @Configuration
-class ElasticConfig(
-    @Value("\${url_elastic}") val url: String,
-    @Value("\${time_out_elastic}") val timeOut: Long
+class StreamingConfig(
+    @Value("\${url_streaming}") val url: String,
+    @Value("\${time_out_streaming}") val timeOut: Long
 ) {
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
     @Bean
-    fun okHttpClient(): OkHttpClient =
+    fun okHttpClientStreaming(): OkHttpClient =
 
         OkHttpClient.Builder()
             .connectTimeout(timeOut, TimeUnit.MILLISECONDS)
@@ -32,16 +33,17 @@ class ElasticConfig(
             .build()
 
     @Bean
-    fun retrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun retrofitStreaming(okHttpClientStreaming: OkHttpClient): Retrofit {
 
         return Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(JacksonConverterFactory.create(objectMapper))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(okHttpClient)
+            .client(okHttpClientStreaming)
             .build()
     }
 
     @Bean
-    fun elasticSearch(retrofit: Retrofit): ElasticSearch = retrofit.create(ElasticSearch::class.java)
+    fun streaming(retrofitStreaming: Retrofit): StreamingFeed = retrofitStreaming.create(StreamingFeed::class.java)
+
 }
