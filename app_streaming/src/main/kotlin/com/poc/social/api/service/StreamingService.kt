@@ -1,4 +1,4 @@
-package com.poc.social.api.entities
+package com.poc.social.api.service
 
 import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior
@@ -6,20 +6,24 @@ import akka.actor.typed.javadsl.AbstractBehavior
 import akka.actor.typed.javadsl.ActorContext
 import akka.actor.typed.javadsl.Behaviors
 import akka.actor.typed.javadsl.Receive
+import com.poc.social.api.entities.Actor
+import com.poc.social.api.entities.NameUser
+import com.poc.social.api.entities.request.FeedRequest
+import com.poc.social.api.entities.response.FeedsResponse
 import java.util.Collections
 
-class UserRegistry
-    private constructor(context: ActorContext<Command?>?) : AbstractBehavior<UserRegistry.Command?>(context) {
+class StreamingService
+    private constructor(context: ActorContext<Command?>?) : AbstractBehavior<StreamingService.Command?>(context) {
 
     interface Command
 
-    class GetUsers(val replyTo: ActorRef<Feeds?>?) :
+    class GetUsers(val replyTo: ActorRef<FeedsResponse?>?) :
         Command
 
-    class CreateUser(val feed: Feed?, val replyTo: ActorRef<ActionPerformed?>?) :
+    class CreateUser(val feedRequest: FeedRequest?, val replyTo: ActorRef<ActionPerformed?>?) :
         Command
 
-    class GetUserResponse(val maybeFeed: Feed)
+    class GetUserResponse(val maybeFeedRequest: FeedRequest)
 
     class GetUser(val id: Long?, val replyTo: ActorRef<GetUserResponse?>?) :
         Command
@@ -29,7 +33,7 @@ class UserRegistry
 
     class ActionPerformed(val description: String?) : Command
 
-    private val feeds: MutableList<Feed?>? = ArrayList()
+    private val feedRequests: MutableList<FeedRequest?>? = ArrayList()
     override fun createReceive(): Receive<Command?>? {
         return newReceiveBuilder()
             .onMessage(
@@ -49,9 +53,9 @@ class UserRegistry
 
     private fun onGetUsers(command: GetUsers?): Behavior<Command?>? {
         command!!.replyTo!!.tell(
-            Feeds(
+            FeedsResponse(
                 Collections.unmodifiableList(
-                    ArrayList(feeds)
+                    ArrayList(feedRequests)
                 )
             )
         )
@@ -59,13 +63,13 @@ class UserRegistry
     }
 
     private fun onGetUser(command: GetUser?): Behavior<Command?>? {
-        val maybeFeed = feeds!!.stream()
-            .filter { user: Feed? -> user!!.id == command!!.id }
+        val maybeFeed = feedRequests!!.stream()
+            .filter { user: FeedRequest? -> user!!.id == command!!.id }
             .findFirst()
         command!!.replyTo!!.tell(
             when (maybeFeed.isPresent) {
                 true -> GetUserResponse(maybeFeed.get())
-                else -> GetUserResponse(Feed(0, 0, Actor(NameUser()), "", "", listOf(), listOf()))
+                else -> GetUserResponse(FeedRequest(0, 0, Actor(NameUser()), "", "", listOf(), listOf()))
             }
 
         )
@@ -73,12 +77,12 @@ class UserRegistry
     }
 
     private fun onCreateUser(command: CreateUser?): Behavior<Command?>? {
-        feeds!!.add(command!!.feed)
+        feedRequests!!.add(command!!.feedRequest)
         command.replyTo!!.tell(
             ActionPerformed(
                 String.format(
                     "User %s created.",
-                    command.feed!!.actor.nameUser
+                    command.feedRequest!!.actor.nameUser
                 )
             )
         )
@@ -86,7 +90,7 @@ class UserRegistry
     }
 
     private fun onDeleteUser(command: DeleteUser?): Behavior<Command?>? {
-        feeds!!.removeIf { feed: Feed? -> feed!!.id == command!!.id }
+        feedRequests!!.removeIf { feedRequest: FeedRequest? -> feedRequest!!.id == command!!.id }
         command!!.replyTo!!.tell(
             ActionPerformed(
                 String.format(
@@ -101,7 +105,7 @@ class UserRegistry
     companion object {
         fun create(): Behavior<Command?>? {
             return Behaviors.setup { context: ActorContext<Command?>? ->
-                UserRegistry(
+                StreamingService(
                     context
                 )
             }

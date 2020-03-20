@@ -20,19 +20,19 @@ import akka.http.javadsl.server.Directives.rejectEmptyResponse
 import akka.http.javadsl.server.PathMatchers
 import akka.http.javadsl.server.Route
 import akka.japi.function.Function
-import com.poc.social.api.entities.Feed
-import com.poc.social.api.entities.Feeds
-import com.poc.social.api.entities.UserRegistry.ActionPerformed
-import com.poc.social.api.entities.UserRegistry.Command
-import com.poc.social.api.entities.UserRegistry.CreateUser
-import com.poc.social.api.entities.UserRegistry.DeleteUser
-import com.poc.social.api.entities.UserRegistry.GetUser
-import com.poc.social.api.entities.UserRegistry.GetUserResponse
-import com.poc.social.api.entities.UserRegistry.GetUsers
+import com.poc.social.api.entities.request.FeedRequest
+import com.poc.social.api.entities.response.FeedsResponse
+import com.poc.social.api.service.StreamingService.ActionPerformed
+import com.poc.social.api.service.StreamingService.Command
+import com.poc.social.api.service.StreamingService.CreateUser
+import com.poc.social.api.service.StreamingService.DeleteUser
+import com.poc.social.api.service.StreamingService.GetUser
+import com.poc.social.api.service.StreamingService.GetUserResponse
+import com.poc.social.api.service.StreamingService.GetUsers
 import java.time.Duration
 import java.util.concurrent.CompletionStage
 
-class UserRouters(
+class StreamingRouters(
     system: ActorSystem<*>,
     private val userRegistryActor: ActorRef<Command?>
 ) {
@@ -57,16 +57,16 @@ class UserRouters(
         )
     }
 
-    private fun getUsers(): CompletionStage<Feeds?>? {
-        return AskPattern.ask<Command, Feeds?>(
+    private fun getUsers(): CompletionStage<FeedsResponse?>? {
+        return AskPattern.ask<Command, FeedsResponse?>(
             userRegistryActor,
-            Function { replyTo: ActorRef<Feeds?>? -> GetUsers(replyTo) },
+            Function { replyTo: ActorRef<FeedsResponse?>? -> GetUsers(replyTo) },
             askTimeout,
             scheduler
         )
     }
 
-    private fun createUser(request: Feed): CompletionStage<ActionPerformed?>? {
+    private fun createUser(request: FeedRequest): CompletionStage<ActionPerformed?>? {
         return request.friends.map {
             AskPattern.ask<Command, ActionPerformed?>(
                 userRegistryActor,
@@ -83,12 +83,12 @@ class UserRouters(
                 pathEnd {
                     concat(
                         get {
-                            onSuccess(getUsers()) { feeds: Feeds? ->
-                                complete(StatusCodes.OK, feeds, Jackson.marshaller())
+                            onSuccess(getUsers()) { feedsResponse: FeedsResponse? ->
+                                complete(StatusCodes.OK, feedsResponse, Jackson.marshaller())
                             }
                         },
                         post {
-                            entity(Jackson.unmarshaller(Feed::class.java)) { request: Feed? ->
+                            entity(Jackson.unmarshaller(FeedRequest::class.java)) { request: FeedRequest? ->
                                 onSuccess(createUser(request!!)) { performed: ActionPerformed? ->
                                     complete(StatusCodes.CREATED, performed, Jackson.marshaller())
                                 }
@@ -100,7 +100,7 @@ class UserRouters(
                         get {
                             rejectEmptyResponse {
                                 onSuccess(getUser(id.toLong()!!)) { performed: GetUserResponse? ->
-                                    complete(StatusCodes.OK, performed!!.maybeFeed, Jackson.marshaller())
+                                    complete(StatusCodes.OK, performed!!.maybeFeedRequest, Jackson.marshaller())
                                 }
                             }
                         },

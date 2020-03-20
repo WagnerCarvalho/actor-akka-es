@@ -14,12 +14,11 @@ import akka.http.javadsl.model.HttpResponse
 import akka.http.javadsl.server.Route
 import akka.stream.Materializer
 import akka.stream.javadsl.Flow
-import com.poc.social.api.entities.UserRegistry
-import com.poc.social.api.routers.UserRouters
+import com.poc.social.api.service.StreamingService
+import com.poc.social.api.routers.StreamingRouters
 import java.net.InetSocketAddress
 import java.util.concurrent.CompletionStage
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
@@ -48,12 +47,12 @@ class AppApplication {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val rootBehavior =
         Behaviors.setup { context: ActorContext<NotUsed?> ->
-            val userRegistryActor: ActorRef<UserRegistry.Command?> =
-                context.spawn(UserRegistry.create(), "UserRegistry")
-            val userRoutes = UserRouters(context.system, userRegistryActor)
+            val streamingServiceActor: ActorRef<StreamingService.Command?> =
+                context.spawn(StreamingService.create(), "UserRegistry")
+            val userRoutes = StreamingRouters(context.system, streamingServiceActor)
             AppApplication().startHttpServer(userRoutes.userRoutes(), context.system)
             Behaviors.empty()
         }

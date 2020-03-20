@@ -1,10 +1,11 @@
-package com.poc.social.api.entities
+package com.poc.social.api.entities.request
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.poc.social.api.entities.Actor
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Feed(
+data class FeedRequest(
 
     @JsonProperty("id")
     val id: Long? = null,
@@ -28,9 +29,9 @@ data class Feed(
     val contact: List<Long> = listOf()
 
 ) {
-    fun actionSocial(id: Long): Feed {
+    fun actionSocial(id: Long): FeedRequest {
 
-        return Feed(
+        return FeedRequest(
             id = id,
             actorId = this.actorId,
             actor = this.actor,
