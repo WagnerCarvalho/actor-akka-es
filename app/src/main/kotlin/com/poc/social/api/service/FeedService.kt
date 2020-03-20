@@ -40,10 +40,10 @@ class FeedService {
             }
     }
 
-    fun getContact(id: Long): Single<ContactResponse> {
-        logger.info("Start getContact with id: $id")
+    fun getContact(userId: Long): Single<ContactResponse> {
+        logger.info("Start getContact with userId: $userId")
 
-        return elasticSearchService.getContact(id)
+        return elasticSearchService.getContact(userId)
             .doOnSuccess {
                 logger.info("End getContact with response: $it")
             }.doOnError {

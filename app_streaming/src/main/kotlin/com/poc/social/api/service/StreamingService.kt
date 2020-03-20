@@ -11,6 +11,7 @@ import com.poc.social.api.entities.NameUser
 import com.poc.social.api.entities.request.FeedRequest
 import com.poc.social.api.entities.response.FeedsResponse
 import java.util.Collections
+import kotlin.streams.toList
 
 class StreamingService
     private constructor(context: ActorContext<Command?>?) : AbstractBehavior<StreamingService.Command?>(context) {
@@ -23,7 +24,7 @@ class StreamingService
     class CreateUser(val feedRequest: FeedRequest?, val replyTo: ActorRef<ActionPerformed?>?) :
         Command
 
-    class GetUserResponse(val maybeFeedRequest: FeedRequest)
+    class GetUserResponse(val maybeFeedRequest: List<FeedRequest?>)
 
     class GetUser(val id: Long?, val replyTo: ActorRef<GetUserResponse?>?) :
         Command
@@ -63,16 +64,11 @@ class StreamingService
     }
 
     private fun onGetUser(command: GetUser?): Behavior<Command?>? {
+
         val maybeFeed = feedRequests!!.stream()
             .filter { user: FeedRequest? -> user!!.id == command!!.id }
-            .findFirst()
-        command!!.replyTo!!.tell(
-            when (maybeFeed.isPresent) {
-                true -> GetUserResponse(maybeFeed.get())
-                else -> GetUserResponse(FeedRequest(0, 0, Actor(NameUser()), "", "", listOf(), listOf()))
-            }
-
-        )
+            .toList()
+        command!!.replyTo!!.tell(GetUserResponse(maybeFeed))
         return this
     }
 

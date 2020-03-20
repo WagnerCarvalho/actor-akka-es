@@ -1,6 +1,7 @@
 package com.poc.social.api.module.es
 
 import com.poc.social.api.entities.Feed
+import com.poc.social.api.entities.request.ContactRequest
 import com.poc.social.api.entities.response.ContactResponse
 import com.poc.social.api.entities.response.FeedCreateResponse
 import com.poc.social.api.entities.response.FeedResponse
@@ -23,8 +24,14 @@ interface ElasticSearch {
         @Path("id") id: String
     ): Single<FeedResponse>
 
-    @GET("/social_contact/_doc/{id}")
+    @PUT("/social_contact/_doc/{user_id}")
+    fun createContact(
+        @Path("user_id") userId: Long,
+        @Body request: ContactRequest
+    ): Single<ContactResponse>
+
+    @GET("/social_contact/_doc/{user_id}")
     fun getContact(
-        @Path("id") id: Long
+        @Path("user_id") user_id: Long
     ): Single<ContactResponse>
 }

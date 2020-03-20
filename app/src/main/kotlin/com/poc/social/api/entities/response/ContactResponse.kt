@@ -2,6 +2,7 @@ package com.poc.social.api.entities.response
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.poc.social.api.entities.request.ContactRequest
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ContactResponse(
@@ -9,7 +10,16 @@ data class ContactResponse(
     @JsonProperty("_source")
     val data: SourceContact = SourceContact()
 
-)
+) {
+    fun get(userId: Long, request: ContactRequest): ContactResponse {
+
+        return ContactResponse(SourceContact(ActorContact(
+            userId,
+            Friends(request.actor.friends.user_id.toList()),
+            Contact(request.actor.contact.user_id.toList())
+        )))
+    }
+}
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class SourceContact(
