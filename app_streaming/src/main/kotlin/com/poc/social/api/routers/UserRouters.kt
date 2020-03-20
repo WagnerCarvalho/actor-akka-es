@@ -75,8 +75,6 @@ class UserRouters(
                 scheduler
             )
         }.get(0)
-
-
     }
 
     fun userRoutes(): Route {

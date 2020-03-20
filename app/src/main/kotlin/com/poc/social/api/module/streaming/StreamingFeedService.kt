@@ -1,7 +1,6 @@
 package com.poc.social.api.module.streaming
 
 import com.poc.social.api.entities.response.FeedContact
-import com.poc.social.api.entities.response.FeedCreateResponse
 import com.poc.social.api.utils.getError
 import io.reactivex.Single
 import io.reactivex.Single.just

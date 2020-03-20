@@ -6,17 +6,30 @@ services:
     restart: always
     ports:
       - 80:80
+      - 81:81
       - 443:443
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
-      - acquirer-app
+      - app
+      - app-streaming
 
-  acquirer-app:
-    container_name: acquirer-app
-    image: acquirer-app
+  app:
+    container_name: app
+    image: app
     build: ./app
     environment:
       - SERVER_PORT=8080
     ports:
       - "8080:8080"
+
+
+  app-streaming:
+    container_name: app-streaming
+    image: app-streaming
+    build: ./app_streaming
+    environment:
+      - SERVER_PORT=8181
+    ports:
+      - "8181:8181"
+

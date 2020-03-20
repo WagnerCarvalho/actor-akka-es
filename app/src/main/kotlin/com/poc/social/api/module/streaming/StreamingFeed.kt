@@ -12,5 +12,4 @@ interface StreamingFeed {
     fun sendFeedSocial(
         @Body request: FeedContact
     ): Single<FeedCreateResponse>
-
 }

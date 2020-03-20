@@ -65,7 +65,7 @@ class UserRegistry
         command!!.replyTo!!.tell(
             when (maybeFeed.isPresent) {
                 true -> GetUserResponse(maybeFeed.get())
-                else -> GetUserResponse(Feed(0,0, Actor(NameUser()),"","", listOf(), listOf()))
+                else -> GetUserResponse(Feed(0, 0, Actor(NameUser()), "", "", listOf(), listOf()))
             }
 
         )

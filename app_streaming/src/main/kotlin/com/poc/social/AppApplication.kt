@@ -19,6 +19,7 @@ import com.poc.social.api.routers.UserRouters
 import java.net.InetSocketAddress
 import java.util.concurrent.CompletionStage
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
@@ -34,7 +35,7 @@ class AppApplication {
         val materializer: Materializer = Materializer.matFromSystem(system)
         val routeFlow: Flow<HttpRequest, HttpResponse, NotUsed> = route.flow(classicSystem, materializer)
         val futureBinding: CompletionStage<ServerBinding> =
-            http.bindAndHandle(routeFlow, ConnectHttp.toHost("localhost", 3000), materializer)
+            http.bindAndHandle(routeFlow, ConnectHttp.toHost("http://127.0.0.1", 8181), materializer)
         futureBinding.whenComplete { binding: ServerBinding?, exception: Throwable? ->
             if (binding != null) {
                 val address: InetSocketAddress = binding.localAddress()

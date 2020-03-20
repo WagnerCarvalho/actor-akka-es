@@ -2,6 +2,7 @@ package com.poc.social.api.configuration.streaming
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.poc.social.api.module.streaming.StreamingFeed
+import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -10,8 +11,6 @@ import org.springframework.context.annotation.Configuration
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
-import retrofit2.http.Streaming
-import java.util.concurrent.TimeUnit
 
 @Configuration
 class StreamingConfig(
@@ -45,5 +44,4 @@ class StreamingConfig(
 
     @Bean
     fun streaming(retrofitStreaming: Retrofit): StreamingFeed = retrofitStreaming.create(StreamingFeed::class.java)
-
 }
