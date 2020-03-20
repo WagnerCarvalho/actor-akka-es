@@ -25,12 +25,14 @@ class FeedService {
 
     fun createSocialFeed(request: Feed): Single<FeedContact> {
         logger.info("Start createSocialFeed with request: $request")
+        var reference = ""
 
         return createFeed(request)
             .flatMap {
+                reference = it._id
                 getContact(request.id!!)
             }.flatMap {
-                streamingFeedService.sendFeedSocial(FeedContact().merge(it, request))
+                streamingFeedService.sendFeedSocial(FeedContact().merge(it, request, reference))
             }.doOnSuccess {
                 logger.info("End createSocialFeed with response: $it")
             }.doOnError {
@@ -60,7 +62,7 @@ class FeedService {
             }
     }
 
-    fun getFeed(id: Long): Single<FeedResponse> {
+    fun getFeed(id: String): Single<FeedResponse> {
         logger.info("Start get with id: $id")
 
         return elasticSearchService.getFeed(id)

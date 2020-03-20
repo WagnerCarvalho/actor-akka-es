@@ -29,7 +29,7 @@ class ElasticSearchService {
             }
     }
 
-    fun getFeed(id: Long): Single<FeedResponse> {
+    fun getFeed(id: String): Single<FeedResponse> {
         logger.info("Start getFeed with id: $id")
 
         return elasticSearch.getFeed(id)

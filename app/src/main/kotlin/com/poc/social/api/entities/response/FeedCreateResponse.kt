@@ -23,6 +23,9 @@ data class FeedCreateResponse(
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class FeedContact(
 
+    @JsonProperty("_id")
+    val _id: String = "",
+
     @JsonProperty("actor_id")
     val actorId: Long? = null,
 
@@ -42,9 +45,10 @@ data class FeedContact(
     val contact: List<Long> = listOf()
 
 ) {
-    fun merge(response: ContactResponse, request: Feed): FeedContact {
+    fun merge(response: ContactResponse, request: Feed, reference: String): FeedContact {
 
         return FeedContact(
+            _id = reference,
             actorId = request.id,
             actor = Actor(nameUser = NameUser(first = request.actor.nameUser.first, last = request.actor.nameUser.last)),
             region = request.region,

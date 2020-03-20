@@ -20,7 +20,7 @@ interface ElasticSearch {
 
     @GET("/social_feed/_doc/{id}")
     fun getFeed(
-        @Path("id") id: Long
+        @Path("id") id: String
     ): Single<FeedResponse>
 
     @GET("/social_contact/_doc/{id}")

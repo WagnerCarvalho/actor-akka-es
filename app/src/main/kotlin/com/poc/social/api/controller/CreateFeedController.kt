@@ -32,7 +32,7 @@ class CreateFeedController {
 
     @GetMapping(FeedRouter.GET_FEED)
     fun get(
-        @PathVariable id: Long
+        @PathVariable id: String
     ): Future<FeedResponse> {
 
         return feedService.getFeed(id).toFutureResponse()

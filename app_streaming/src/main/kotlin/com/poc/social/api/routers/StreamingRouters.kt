@@ -80,6 +80,11 @@ class StreamingRouters(
     fun userRoutes(): Route {
         return pathPrefix("feeds") {
             concat(
+                path("ping") {
+                    get {
+                        complete(StatusCodes.OK, "pong => social-feed", Jackson.marshaller())
+                    }
+                },
                 pathEnd {
                     concat(
                         get {
