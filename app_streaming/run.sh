@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "********************************************************"
-echo "Starting app"
+echo "Starting app_streaming"
 echo "********************************************************"
 
 java -Dserver.port=$SERVER_PORT \

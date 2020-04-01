@@ -1,19 +1,5 @@
 version: '3'
 services:
-  event-nginx:
-    container_name: event-nginx
-    image: nginx:1.13
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/error.log:/etc/nginx/error_log.log
-    depends_on:
-      - app-streaming
-      - app
-
   app-streaming:
     container_name: app-streaming
     image: app-streaming
@@ -22,6 +8,8 @@ services:
       - SERVER_PORT=8080
     ports:
       - "8080:8080"
+      - "9200:9200"
+      - "9300:9300"
     expose:
       - "80"
 
