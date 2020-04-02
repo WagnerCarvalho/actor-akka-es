@@ -9,6 +9,7 @@
 *   ElasticSearch
 
 
+##  Flow
 
 <p align="center">
   <img src="https://github.com/WagnerCarvalho/akka-es-example/tree/master/.github/flowStreaming.png" width="300">
@@ -21,11 +22,11 @@ cd akka-es-example
 ./starting.sh
 ```
 
-#Endpoint submit feed
+##Endpoint submit feed
 
 Readme -> [app](https://github.com/WagnerCarvalho/akka-es-example/blob/master/app/README.md "app")
 
-#Endpoint check feed per user
+##Endpoint check feed per user
 
 Readme -> [app_streaming](https://github.com/WagnerCarvalho/akka-es-example/blob/master/app_streaming/README.md "app_streaming")
 
