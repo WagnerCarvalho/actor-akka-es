@@ -1,5 +1,5 @@
 # akka-es-example
-> A showcase application using the [akka] structure (https://akka.io/ "akka"), to emulate social feeds guaranteeing the idempotency, parallelism and simultaneity of the events.
+> A showcase application using the [akka](https://akka.io/ "akka"), to emulate social feeds guaranteeing the idempotency, parallelism and simultaneity of the events.
 
 ## Stack
 *   Akka
@@ -10,7 +10,7 @@
 
 Flow
 <p align="center">
-  <img src="https://github.com/WagnerCarvalho/akka-es-example/tree/master/.image/flow.png" width="800">
+  <img src="https://github.com/WagnerCarvalho/akka-es-example/tree/master/.github/flow.png" width="600">
 </p>
 
 ## Execute Flow
@@ -18,3 +18,10 @@ Flow
 cd akka-es-example
 ./starting.sh
 ```
+
+#Endpoint submit feed
+Readme -> [app](https://github.com/WagnerCarvalho/akka-es-example/blob/master/app/README.md "app")
+
+#Endpoint check feed per user
+Readme -> [app_streaming](https://github.com/WagnerCarvalho/akka-es-example/blob/master/app_streaming/README.md "app_streaming")
+
