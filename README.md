@@ -15,7 +15,6 @@
 </p>
 
 
-
 ## Execute Flow
 ```
 cd akka-es-example
@@ -23,8 +22,10 @@ cd akka-es-example
 ```
 
 #Endpoint submit feed
+
 Readme -> [app](https://github.com/WagnerCarvalho/akka-es-example/blob/master/app/README.md "app")
 
 #Endpoint check feed per user
+
 Readme -> [app_streaming](https://github.com/WagnerCarvalho/akka-es-example/blob/master/app_streaming/README.md "app_streaming")
 
