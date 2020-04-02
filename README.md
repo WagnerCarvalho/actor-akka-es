@@ -22,14 +22,14 @@ cd akka-es-example
 ./starting.sh
 ```
 
-##Endpoint submit feed
+## Endpoint submit feed
 
 
 Readme -> [app](https://github.com/WagnerCarvalho/akka-es-example/blob/master/app/README.md "app")
 
 
 
-##Endpoint check feed per user
+## Endpoint check feed per user
 
 
 
