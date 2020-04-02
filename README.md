@@ -11,7 +11,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/WagnerCarvalho/akka-es-example/tree/master/.github/flow.png" width="600">
+  <img src="https://github.com/WagnerCarvalho/akka-es-example/tree/master/.github/flowStreaming.png" width="300">
 </p>
 
 
