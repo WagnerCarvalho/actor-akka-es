@@ -8,18 +8,28 @@ services:
       - SERVER_PORT=8080
     ports:
       - "8080:8080"
-      - "9200:9200"
-      - "9300:9300"
     expose:
       - "80"
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
 
   app:
     container_name: app
     image: app
     build: ./app
     environment:
+      - ELASTIC_HOST=elasticsearch
+      - ELASTIC_HOST_PORT=9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
       - SERVER_PORT=5000
     ports:
       - "5000:5000"
+      - "9000:9000"
     expose:
       - "80"

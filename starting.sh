@@ -15,5 +15,4 @@ echo "********************************************************"
 echo "Run compose docker to create environments"
 echo "********************************************************"
 
-#docker-compose up -d --build
 docker-compose up

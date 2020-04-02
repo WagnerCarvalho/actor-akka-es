@@ -7,17 +7,22 @@ import com.poc.social.api.entities.request.ContactRequest
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ContactResponse(
 
+    @JsonProperty("_id")
+    val id: Long? = null,
+
     @JsonProperty("_source")
     val data: SourceContact = SourceContact()
 
 ) {
     fun get(userId: Long, request: ContactRequest): ContactResponse {
 
-        return ContactResponse(SourceContact(ActorContact(
-            userId,
-            Friends(request.actor.friends.user_id.toList()),
-            Contact(request.actor.contact.user_id.toList())
-        )))
+        return ContactResponse(
+            id=userId,
+            data = SourceContact(ActorContact(
+                Friends(request.actor.friends.user_id.toList()),
+                Contact(request.actor.contact.user_id.toList())
+            ))
+        )
     }
 }
 
@@ -31,9 +36,6 @@ data class SourceContact(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ActorContact(
-
-    @JsonProperty("id")
-    val id: Long? = null,
 
     @JsonProperty("friends")
     val friends: Friends = Friends(),

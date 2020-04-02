@@ -34,7 +34,7 @@ class AppApplication {
         val materializer: Materializer = Materializer.matFromSystem(system)
         val routeFlow: Flow<HttpRequest, HttpResponse, NotUsed> = route.flow(classicSystem, materializer)
         val futureBinding: CompletionStage<ServerBinding> =
-            http.bindAndHandle(routeFlow, ConnectHttp.toHost("http://127.0.0.1", 8080), materializer)
+            http.bindAndHandle(routeFlow, ConnectHttp.toHost("http://app-streaming", 8080), materializer)
         futureBinding.whenComplete { binding: ServerBinding?, exception: Throwable? ->
             if (binding != null) {
                 val address: InetSocketAddress = binding.localAddress()
