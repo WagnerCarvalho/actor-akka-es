@@ -29,7 +29,7 @@ Readme -> [app](https://github.com/WagnerCarvalho/akka-es-example/blob/master/ap
 
 
 
-## Endpoint check feed per user
+## Endpoint check feed by user
 
 
 
