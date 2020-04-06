@@ -12,7 +12,7 @@
 ##  Flow
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/WagnerCarvalho/akka-es-example/master/.github/flowStreaming.png" width="600">
+  <img src="https://raw.githubusercontent.com/WagnerCarvalho/akka-es-example/master/.github/flowStreaming.png" width="700">
 </p>
 
 
